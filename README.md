@@ -64,7 +64,7 @@ Para que o login funcione corretamente em produção:
 2. Vá em Authentication → Settings  
 3. Em Authorized domains, adicione:
 
-seu-projeto.vercel.app
+project-pace-calc.vercel.app
 
 ---
 
