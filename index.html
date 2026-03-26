@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pace Calc · By Miguel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════
+     TELA DE LOGIN
+══════════════════════════ -->
+<div id="login-screen" class="login-screen">
+  <div class="login-bg-grid"></div>
+  <div class="login-orb"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="52" height="52" viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="47" stroke="#00e676" stroke-width="4"/>
+        <circle cx="50" cy="50" r="8" fill="#00e676"/>
+        <line x1="50" y1="3" x2="50" y2="97" stroke="#00e676" stroke-width="2.5"/>
+        <line x1="3" y1="50" x2="97" y2="50" stroke="#00e676" stroke-width="2.5"/>
+        <line x1="16" y1="16" x2="84" y2="84" stroke="#00e676" stroke-width="2"/>
+        <line x1="84" y1="16" x2="16" y2="84" stroke="#00e676" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="login-badge"><span class="badge-dot"></span>Your Personal Pace</div>
+    <h1 class="login-title">PACE<span class="g">CALC</span></h1>
+    <p class="login-sub">Atletismo & Ciclismo — sua performance em um lugar só</p>
+    <div class="login-divider"><span>Entrar com</span></div>
+    <button class="login-btn google" id="btn-google" onclick="loginGoogle()">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Continuar com Google
+    </button>
+    <div class="login-error" id="login-error"></div>
+    <p class="login-footer">Ao entrar, você concorda com os termos de uso do projeto.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════
+     APP PRINCIPAL
+══════════════════════════ -->
+<div id="app-screen" style="display:none">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="47" stroke="#00e676" stroke-width="4"/>
+        <circle cx="50" cy="50" r="8" fill="#00e676"/>
+        <line x1="50" y1="3" x2="50" y2="97" stroke="#00e676" stroke-width="2.5"/>
+        <line x1="3" y1="50" x2="97" y2="50" stroke="#00e676" stroke-width="2.5"/>
+        <line x1="16" y1="16" x2="84" y2="84" stroke="#00e676" stroke-width="2"/>
+        <line x1="84" y1="16" x2="16" y2="84" stroke="#00e676" stroke-width="2"/>
+      </svg>
+      <span class="topbar-title">PACE<span class="g">CALC</span></span>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-nav">
+        <button class="nav-btn active" onclick="showSection('calc')">Calculadoras</button>
+        <button class="nav-btn" onclick="showSection('dashboard')">Dashboard</button>
+      </div>
+      <div class="user-menu" id="user-menu" onclick="toggleUserMenu()">
+        <img id="user-avatar" src="" alt="" class="user-avatar"/>
+        <span id="user-name-short" class="user-name-short"></span>
+        <span class="chevron">▾</span>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="dropdown-info">
+            <img id="dropdown-avatar" src="" alt=""/>
+            <div>
+              <div id="dropdown-name" class="d-name"></div>
+              <div id="dropdown-email" class="d-email"></div>
+            </div>
+          </div>
+          <hr class="dropdown-hr"/>
+          <button class="dropdown-logout" onclick="logout()">↩ Sair da conta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULADORAS -->
+  <div id="section-calc" class="main-content">
+    <div class="page running-mode" id="app-inner">
+      <div class="sport-switcher">
+        <button class="sport-btn running active" onclick="setSport('running',this)"><span class="sport-icon">🏃</span><span>Atletismo</span></button>
+        <button class="sport-btn cycling" onclick="setSport('cycling',this)"><span class="sport-icon">🚴</span><span>Ciclismo</span></button>
+      </div>
+
+      <!-- RUNNING -->
+      <div id="section-running">
+        <div class="tabs-wrap"><div class="tabs" id="tabs-running">
+          <button class="tab active" onclick="switchTab('r','pace',this)"><span class="t-icon">⏱</span>Pace</button>
+          <button class="tab" onclick="switchTab('r','tempo',this)"><span class="t-icon">🎯</span>Tempo</button>
+          <button class="tab" onclick="switchTab('r','calorias',this)"><span class="t-icon">🔥</span>Calorias</button>
+          <button class="tab" onclick="switchTab('r','velocidade',this)"><span class="t-icon">⚡</span>Velocidade</button>
+        </div></div>
+
+        <div class="panel active" id="r-pace"><div class="card">
+          <div class="card-title">CALCULAR PACE</div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância</label>
+            <div class="input-group"><input type="number" id="rp-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">⏰</span>Tempo total</label>
+            <div class="time-row tr3"><input type="number" id="rp-h" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="rp-m" placeholder="00" min="0" max="59"/><span class="time-sep">:</span><input type="number" id="rp-s" placeholder="00" min="0" max="59"/></div>
+            <p class="hint">horas : minutos : segundos</p></div>
+          <button class="btn" onclick="calcRPace()">→ CALCULAR PACE</button>
+        </div>
+        <div class="error" id="rp-err">⚠ Preencha distância e pelo menos um campo de tempo.</div>
+        <div class="result" id="rp-res">
+          <div class="result-label">Pace médio</div>
+          <div class="result-header"><span class="result-main" id="rp-val">—</span><span class="result-unit">min/km</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Velocidade</div><div class="ri-val" id="rp-speed">—</div></div><div class="ri"><div class="ri-label">Tempo total</div><div class="ri-val" id="rp-time">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Pace Atletismo','rp')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="r-tempo"><div class="card">
+          <div class="card-title">CALCULAR TEMPO</div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância alvo</label>
+            <div class="input-group"><input type="number" id="rt-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">🏃</span>Pace desejado</label>
+            <div class="time-row tr2"><input type="number" id="rt-pm" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="rt-ps" placeholder="00" min="0" max="59"/></div>
+            <p class="hint">minutos : segundos por km</p></div>
+          <button class="btn" onclick="calcRTempo()">→ CALCULAR TEMPO</button>
+        </div>
+        <div class="error" id="rt-err">⚠ Preencha distância e pace.</div>
+        <div class="result" id="rt-res">
+          <div class="result-label">Tempo estimado</div>
+          <div class="result-header"><span class="result-main" id="rt-val">—</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Distância</div><div class="ri-val" id="rt-dist-out">—</div></div><div class="ri"><div class="ri-label">Velocidade</div><div class="ri-val" id="rt-speed">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Tempo Atletismo','rt')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="r-calorias"><div class="card">
+          <div class="card-title">CALCULAR CALORIAS</div>
+          <div class="field"><label><span class="lbl-icon">⚖️</span>Peso corporal</label>
+            <div class="input-group"><input type="number" id="rc-peso" placeholder="70" min="30" max="200"/><span class="unit-tag">kg</span></div></div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância</label>
+            <div class="input-group"><input type="number" id="rc-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">🎚️</span>Intensidade</label>
+            <select id="rc-intens" onchange="updateIBar('rc-ibar','rc-intens')">
+              <option value="0.3">🟢 Leve</option><option value="0.5" selected>🟡 Moderado</option><option value="0.7">🟠 Intenso</option><option value="0.9">🔴 Muito intenso</option>
+            </select><div class="ibar"><div class="ibar-fill" id="rc-ibar" style="width:50%"></div></div></div>
+          <button class="btn" onclick="calcRCal()">→ CALCULAR CALORIAS</button>
+        </div>
+        <div class="error" id="rc-err">⚠ Preencha peso e distância.</div>
+        <div class="result" id="rc-res">
+          <div class="result-label">Calorias estimadas</div>
+          <div class="result-header"><span class="result-main" id="rc-val">—</span><span class="result-unit">kcal</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Por km</div><div class="ri-val" id="rc-perkm">—</div></div><div class="ri"><div class="ri-label">Distância</div><div class="ri-val" id="rc-dist-out">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Calorias Atletismo','rc')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="r-velocidade"><div class="card">
+          <div class="card-title">CALCULAR VELOCIDADE</div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância</label>
+            <div class="input-group"><input type="number" id="rv-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">⏰</span>Tempo total</label>
+            <div class="time-row tr3"><input type="number" id="rv-h" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="rv-m" placeholder="00" min="0" max="59"/><span class="time-sep">:</span><input type="number" id="rv-s" placeholder="00" min="0" max="59"/></div>
+            <p class="hint">horas : minutos : segundos</p></div>
+          <button class="btn" onclick="calcRVel()">→ CALCULAR VELOCIDADE</button>
+        </div>
+        <div class="error" id="rv-err">⚠ Preencha distância e tempo.</div>
+        <div class="result" id="rv-res">
+          <div class="result-label">Velocidade média</div>
+          <div class="result-header"><span class="result-main" id="rv-val">—</span><span class="result-unit">km/h</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Pace</div><div class="ri-val" id="rv-pace">—</div></div><div class="ri"><div class="ri-label">Tempo total</div><div class="ri-val" id="rv-time">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Velocidade Atletismo','rv')">💾 Salvar no histórico</button>
+        </div></div>
+      </div>
+
+      <!-- CYCLING -->
+      <div id="section-cycling" style="display:none">
+        <div class="tabs-wrap"><div class="tabs" id="tabs-cycling">
+          <button class="tab active" onclick="switchTab('c','vam',this)"><span class="t-icon">⛰️</span>VAM</button>
+          <button class="tab" onclick="switchTab('c','vmedia',this)"><span class="t-icon">📊</span>V. Média</button>
+          <button class="tab" onclick="switchTab('c','vmax',this)"><span class="t-icon">🚀</span>V. Máxima</button>
+          <button class="tab" onclick="switchTab('c','cpace',this)"><span class="t-icon">⏱</span>Pace</button>
+          <button class="tab" onclick="switchTab('c','ccal',this)"><span class="t-icon">🔥</span>Calorias</button>
+        </div></div>
+
+        <div class="panel active" id="c-vam"><div class="card">
+          <div class="card-title">CALCULAR VAM</div>
+          <div class="info-row">ℹ️ VAM = Velocidade de Ascensão em Metros por hora.</div>
+          <div class="field"><label><span class="lbl-icon">📐</span>Ganho de altitude</label>
+            <div class="input-group"><input type="number" id="vam-alt" placeholder="500" min="0"/><span class="unit-tag">m</span></div></div>
+          <div class="field"><label><span class="lbl-icon">⏰</span>Tempo na subida</label>
+            <div class="time-row tr3"><input type="number" id="vam-h" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="vam-m" placeholder="00" min="0" max="59"/><span class="time-sep">:</span><input type="number" id="vam-s" placeholder="00" min="0" max="59"/></div>
+            <p class="hint">horas : minutos : segundos</p></div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância (opcional)</label>
+            <div class="input-group"><input type="number" id="vam-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <button class="btn" onclick="calcVAM()">→ CALCULAR VAM</button>
+        </div>
+        <div class="error" id="vam-err">⚠ Preencha altitude e tempo.</div>
+        <div class="result" id="vam-res">
+          <div class="result-label">VAM</div>
+          <div class="result-header"><span class="result-main" id="vam-val">—</span><span class="result-unit">m/h</span></div>
+          <div class="result-grid cols3"><div class="ri"><div class="ri-label">Categoria</div><div class="ri-val" id="vam-cat">—</div></div><div class="ri"><div class="ri-label">Gradiente</div><div class="ri-val" id="vam-grad">—</div></div><div class="ri"><div class="ri-label">Vel. média</div><div class="ri-val" id="vam-speed">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('VAM Ciclismo','vam')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="c-vmedia"><div class="card">
+          <div class="card-title">VELOCIDADE MÉDIA</div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância</label>
+            <div class="input-group"><input type="number" id="vm-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">⏰</span>Tempo total</label>
+            <div class="time-row tr3"><input type="number" id="vm-h" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="vm-m" placeholder="00" min="0" max="59"/><span class="time-sep">:</span><input type="number" id="vm-s" placeholder="00" min="0" max="59"/></div></div>
+          <button class="btn" onclick="calcVMedia()">→ CALCULAR</button>
+        </div>
+        <div class="error" id="vm-err">⚠ Preencha distância e tempo.</div>
+        <div class="result" id="vm-res">
+          <div class="result-label">Velocidade média</div>
+          <div class="result-header"><span class="result-main" id="vm-val">—</span><span class="result-unit">km/h</span></div>
+          <div class="result-grid cols3"><div class="ri"><div class="ri-label">Pace</div><div class="ri-val" id="vm-pace">—</div></div><div class="ri"><div class="ri-label">Categoria</div><div class="ri-val" id="vm-cat">—</div></div><div class="ri"><div class="ri-label">Tempo</div><div class="ri-val" id="vm-time">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Velocidade Média Ciclismo','vm')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="c-vmax"><div class="card">
+          <div class="card-title">VELOCIDADE MÁXIMA</div>
+          <div class="info-row">ℹ️ Velocidade no melhor trecho percorrido.</div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância do trecho</label>
+            <div class="input-group"><input type="number" id="vx-dist" placeholder="1.0" step="0.01" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">⏰</span>Tempo no trecho</label>
+            <div class="time-row tr3"><input type="number" id="vx-h" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="vx-m" placeholder="00" min="0" max="59"/><span class="time-sep">:</span><input type="number" id="vx-s" placeholder="00" min="0" max="59"/></div></div>
+          <button class="btn" onclick="calcVMax()">→ CALCULAR V. MÁXIMA</button>
+        </div>
+        <div class="error" id="vx-err">⚠ Preencha distância e tempo.</div>
+        <div class="result" id="vx-res">
+          <div class="result-label">Velocidade máxima</div>
+          <div class="result-header"><span class="result-main" id="vx-val">—</span><span class="result-unit">km/h</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Nível</div><div class="ri-val" id="vx-nivel">—</div></div><div class="ri"><div class="ri-label">Pace</div><div class="ri-val" id="vx-pace">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Velocidade Máxima Ciclismo','vx')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="c-cpace"><div class="card">
+          <div class="card-title">PACE NO CICLISMO</div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância</label>
+            <div class="input-group"><input type="number" id="cp-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">⏰</span>Tempo total</label>
+            <div class="time-row tr3"><input type="number" id="cp-h" placeholder="00" min="0" max="99"/><span class="time-sep">:</span><input type="number" id="cp-m" placeholder="00" min="0" max="59"/><span class="time-sep">:</span><input type="number" id="cp-s" placeholder="00" min="0" max="59"/></div></div>
+          <button class="btn" onclick="calcCPace()">→ CALCULAR PACE</button>
+        </div>
+        <div class="error" id="cp-err">⚠ Preencha distância e tempo.</div>
+        <div class="result" id="cp-res">
+          <div class="result-label">Pace ciclismo</div>
+          <div class="result-header"><span class="result-main" id="cp-val">—</span><span class="result-unit">min/km</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Velocidade</div><div class="ri-val" id="cp-speed">—</div></div><div class="ri"><div class="ri-label">Tempo total</div><div class="ri-val" id="cp-time">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Pace Ciclismo','cp')">💾 Salvar no histórico</button>
+        </div></div>
+
+        <div class="panel" id="c-ccal"><div class="card">
+          <div class="card-title">CALORIAS — BIKE</div>
+          <div class="field"><label><span class="lbl-icon">⚖️</span>Peso corporal</label>
+            <div class="input-group"><input type="number" id="cc-peso" placeholder="70" min="30" max="200"/><span class="unit-tag">kg</span></div></div>
+          <div class="field"><label><span class="lbl-icon">📍</span>Distância</label>
+            <div class="input-group"><input type="number" id="cc-dist" placeholder="0.0" step="0.1" min="0"/><span class="unit-tag">km</span></div></div>
+          <div class="field"><label><span class="lbl-icon">🎚️</span>Intensidade</label>
+            <select id="cc-intens" onchange="updateIBar('cc-ibar','cc-intens')">
+              <option value="0.3">🟢 Leve</option><option value="0.5" selected>🟡 Moderado</option><option value="0.7">🟠 Intenso</option><option value="0.9">🔴 Muito intenso</option>
+            </select><div class="ibar"><div class="ibar-fill" id="cc-ibar" style="width:50%"></div></div></div>
+          <button class="btn" onclick="calcCCal()">→ CALCULAR CALORIAS</button>
+        </div>
+        <div class="error" id="cc-err">⚠ Preencha peso e distância.</div>
+        <div class="result" id="cc-res">
+          <div class="result-label">Calorias estimadas</div>
+          <div class="result-header"><span class="result-main" id="cc-val">—</span><span class="result-unit">kcal</span></div>
+          <div class="result-grid"><div class="ri"><div class="ri-label">Por km</div><div class="ri-val" id="cc-perkm">—</div></div><div class="ri"><div class="ri-label">Distância</div><div class="ri-val" id="cc-dist-out">—</div></div></div>
+          <button class="save-btn" onclick="saveResult('Calorias Ciclismo','cc')">💾 Salvar no histórico</button>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="section-dashboard" class="main-content" style="display:none">
+    <div class="dashboard">
+      <div class="dash-header">
+        <h2 class="dash-title">MEU <span class="g">DASHBOARD</span></h2>
+        <p class="dash-sub">Seu histórico pessoal de performance</p>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card"><div class="sc-icon">🏃</div><div class="sc-num" id="total-treinos">0</div><div class="sc-label">Treinos Salvos</div></div>
+        <div class="summary-card"><div class="sc-icon">📍</div><div class="sc-num" id="total-km">0.0</div><div class="sc-label">km Totais</div></div>
+        <div class="summary-card"><div class="sc-icon">🔥</div><div class="sc-num" id="total-kcal">0</div><div class="sc-label">kcal Totais</div></div>
+      </div>
+      <div class="dash-section">
+        <div class="dash-section-header"><h3>🎯 Metas Pessoais</h3><button class="add-btn" onclick="openGoalModal()">+ Nova Meta</button></div>
+        <div id="goals-list"><div class="empty-state">Nenhuma meta ainda. Adicione sua primeira! 🎯</div></div>
+      </div>
+      <div class="dash-section">
+        <div class="dash-section-header"><h3>⚖️ Peso Corporal</h3><button class="add-btn" onclick="openWeightModal()">+ Registrar</button></div>
+        <div id="weight-list"><div class="empty-state">Nenhum registro de peso ainda.</div></div>
+      </div>
+      <div class="dash-section">
+        <div class="dash-section-header"><h3>📋 Histórico de Treinos</h3><button class="add-btn danger" onclick="clearHistory()">🗑 Limpar</button></div>
+        <div id="history-list"><div class="empty-state">Nenhum treino salvo. Use as calculadoras e clique em 💾!</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-screen -->
+
+<!-- MODAL META -->
+<div class="modal-overlay" id="goal-modal" onclick="closeModal('goal-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 class="modal-title">🎯 Nova Meta</h3>
+    <div class="field"><label>Descrição</label><input type="text" id="goal-desc" placeholder="Ex: Correr 10km em menos de 1h"/></div>
+    <div class="field"><label>Prazo</label><input type="date" id="goal-date"/></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveGoal()">Salvar Meta</button>
+      <button class="btn-outline" onclick="closeModal('goal-modal')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PESO -->
+<div class="modal-overlay" id="weight-modal" onclick="closeModal('weight-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 class="modal-title">⚖️ Registrar Peso</h3>
+    <div class="field"><label>Peso (kg)</label><input type="number" id="weight-val" placeholder="70.5" step="0.1"/></div>
+    <div class="field"><label>Data</label><input type="date" id="weight-date"/></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveWeight()">Salvar</button>
+      <button class="btn-outline" onclick="closeModal('weight-modal')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
